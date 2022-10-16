@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const EventList = ({ events }) => {
   const renderEvents = (eventArray) => {
@@ -7,9 +8,11 @@ const EventList = ({ events }) => {
 
     return eventArray.map((event) => (
       <li key={event.id}>
-        {event.event_date}
-        {' - '}
-        {event.event_type}
+        <Link to={`/events/${event.id}`}>
+          {event.event_date}
+          {' - '}
+          {event.event_type}
+        </Link>
       </li>
     ));
   };
@@ -23,7 +26,8 @@ const EventList = ({ events }) => {
 };
 
 EventList.propTypes = {
-    events: PropTypes.arrayOf(PropTypes.shape({
+  events: PropTypes.arrayOf(
+    PropTypes.shape({
       id: PropTypes.number,
       event_type: PropTypes.string,
       event_date: PropTypes.string,
@@ -31,7 +35,8 @@ EventList.propTypes = {
       speaker: PropTypes.string,
       host: PropTypes.string,
       published: PropTypes.bool,
-    })).isRequired,
-  };
+    })
+  ).isRequired,
+};
 
 export default EventList;
