@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const EventList = ({ events }) => {
   const renderEvents = (eventArray) => {
@@ -20,5 +21,17 @@ const EventList = ({ events }) => {
     </section>
   );
 };
+
+EventList.propTypes = {
+    events: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number,
+      event_type: PropTypes.string,
+      event_date: PropTypes.string,
+      title: PropTypes.string,
+      speaker: PropTypes.string,
+      host: PropTypes.string,
+      published: PropTypes.bool,
+    })).isRequired,
+  };
 
 export default EventList;
