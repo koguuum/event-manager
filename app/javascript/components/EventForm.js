@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { isEmptyObject, validateEvent } from '../helpers/helpers';
+import React, { useState, useRef, useEffect } from 'react';
+import Pikaday from 'pikaday';
+import 'pikaday/css/pikaday.css';
+import { formatDate, isEmptyObject, validateEvent } from '../helpers/helpers';
 
 const EventForm = () => {
   const [event, setEvent] = useState({
@@ -11,7 +13,26 @@ const EventForm = () => {
     published: false,
   });
 
+  const updateEvent = (key, value) => {
+    setEvent((prevEvent) => ({ ...prevEvent, [key]: value }));
+  };
+
+  useEffect(() => {
+    const p = new Pikaday({
+      field: dateInput.current,
+      onSelect: (date) => {
+        const formattedDate = formatDate(date);
+        dateInput.current.value = formattedDate;
+        updateEvent('event_date', formattedDate);
+      },
+    });
+
+    return () => p.destroy();
+  }, []);
+
   const [formErrors, setFormErrors] = useState({});
+
+  const dateInput = useRef(null);
 
   const handleInputChange = (e) => {
     const { target } = e;
@@ -72,7 +93,8 @@ const EventForm = () => {
               type='text'
               id='event_date'
               name='event_date'
-              onChange={handleInputChange}
+              ref={dateInput}
+              autoComplete='off'
             />
           </label>
         </div>
